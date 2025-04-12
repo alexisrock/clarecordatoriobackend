@@ -6,6 +6,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY .mvn .mvn
 COPY mvnw .
+RUN chmod +x mvnw
 COPY mvnw.cmd .
 
 # Descargar dependencias sin compilar todo el proyecto
