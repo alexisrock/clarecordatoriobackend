@@ -29,7 +29,7 @@ jobs:
     # Paso 4: Construir la imagen de Docker
     - name: Build Docker image
       run: |
-        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/clrecordatoriobackend:latest   -f ./clrecordatoriobackend/Dockerfile ./clrecordatoriobackend
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/clrecordatoriobackend:latest   -f clrecordatoriobackend/Dockerfile clrecordatoriobackend
 
     # Paso 5: Etiquetar y subir la imagen a ACR
     - name: Push Docker image
