@@ -21,7 +21,7 @@ public class Users {
     private String Password;
     @Column(name="Celular", length = 10, nullable = true)
     private String Celular;
-    @Column(name="Fecha_registro",   nullable = true)
+    @Column(name="Fecharegistro",   nullable = true)
     private Date Fecha_registro;
     @Column(name="Estado",   nullable = true)
     private boolean Estado;

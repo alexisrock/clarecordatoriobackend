@@ -16,11 +16,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17' # o la versión de Java que uses en tu proyecto
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+        working-directory: ./ # Asegúrate de que gradlew esté en la raíz del repositorio
+
+      - name: Run Unit Tests
+        run: ./gradlew test # o ./mvnw test si usas Maven
+        working-directory: ./ # Asegúrate de que el comando se ejecute en la raíz del repositorio
+
       - name: Log in to Docker Hub
+        if: success() # Solo ejecutar si el paso anterior (Run Unit Tests) fue exitoso
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
       - name: Build the Docker image
+        if: success() # Solo ejecutar si el paso anterior (Log in to Docker Hub) fue exitoso
         run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO }}:latest .
 
       - name: Push the Docker image
+        if: success() # Solo ejecutar si el paso anterior (Build the Docker image) fue exitoso
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO }}:latest
