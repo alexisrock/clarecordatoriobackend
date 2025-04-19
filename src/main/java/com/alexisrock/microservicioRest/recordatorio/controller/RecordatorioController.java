@@ -18,6 +18,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/recordatorio")
 @Tag(name = "Recordatorios", description = "Operaciones sobre recordatorios")

@@ -52,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
                 throw new ApiException("Contraseña incorrecta");
             }
             String token = generateToken(user.getEmail());
-            response = new LoginResponse(token);
+            response = new LoginResponse(token, user.getId());
             return response;
         } catch (Exception e) {
             throw e;
@@ -78,6 +78,8 @@ public class LoginServiceImpl implements LoginService {
     void validationEmail(Users users) {
         if (users == null)
             throw new ApiException("correo invalido");
+
+
     }
 
     public boolean validatePassword(String password, String encryptedPassword) {

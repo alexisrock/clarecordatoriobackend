@@ -1,21 +1,20 @@
 package com.alexisrock.microservicioRest.security;
-import com.alexisrock.microservicioRest.Common.enums.ParamConfig;
 import com.alexisrock.microservicioRest.login.domain.interfaces.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -40,6 +39,22 @@ public class SecurityConfiguration {
                 .exceptionHandling(ex -> ex
                         .accessDeniedHandler(null)
                 )
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Agrega la configuración CORS
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Reemplaza con el origen de tu frontend
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+        configuration.setAllowCredentials(true); // Si necesitas cookies o encabezados de autenticación
+
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/recordatorio/**", configuration); // Aplica la configuración a las rutas protegidas
+
+        return source;
     }
 }
