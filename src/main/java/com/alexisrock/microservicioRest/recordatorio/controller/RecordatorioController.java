@@ -36,7 +36,7 @@ public class RecordatorioController {
         return ResponseEntity.ok().body(responseList);
     }
 
-
+    @CrossOrigin(origins = "*")
     @PostMapping("/create")
     @Operation(summary = "crear  recordatorios por usuario")
     public ResponseEntity<?> createRecordatorio(@RequestBody RecordatorioRequest request) {
@@ -47,7 +47,7 @@ public class RecordatorioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
-
+    @CrossOrigin(origins = "*")
     @PatchMapping("/patchrecordatorio")
     @Operation(summary = "actualizar los estados del recordatorio del usuario")
     public ResponseEntity<?> patchRecordatorio(@RequestBody RecordatorioUpdateRequest request) {
@@ -58,7 +58,7 @@ public class RecordatorioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
-
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "eliminar el recordatorio del usuario")
 

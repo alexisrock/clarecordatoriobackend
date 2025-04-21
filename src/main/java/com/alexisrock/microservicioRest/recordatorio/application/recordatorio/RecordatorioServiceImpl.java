@@ -6,10 +6,14 @@ import com.alexisrock.microservicioRest.recordatorio.application.validations.Val
 import com.alexisrock.microservicioRest.recordatorio.domain.entities.Recordatorio;
 import com.alexisrock.microservicioRest.recordatorio.domain.interfaces.RecordatorioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.alexisrock.microservicioRest.recordatorio.application.Mappers.TransformEntities;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RecordatorioServiceImpl implements RecordatorioService {
@@ -50,7 +54,10 @@ public class RecordatorioServiceImpl implements RecordatorioService {
         try {
             validateIdRecordatorioIsCero(request.getId());
             BaseResponse response = new BaseResponse();
-            Recordatorio recordatorio = repository.findById(request.getId()).get();
+            Optional<Recordatorio> optionalRecordatorio = repository.findById(request.getId());
+            Recordatorio recordatorio = optionalRecordatorio.orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró el recordatorio con Id: " + request.getId()));
+
             validateExitsRecordatorio(recordatorio);
             TransformEntities.getMaperRecordatorio(recordatorio, request);
             repository.save(recordatorio);
